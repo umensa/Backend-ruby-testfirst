@@ -92,5 +92,4 @@ describe "Simon says" do
       expect(titleize("the bridge over the river kwai")).to eq("The Bridge over the River Kwai")
     end
   end
-
 end
