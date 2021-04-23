@@ -1,25 +1,49 @@
-def translate(string)
-  vowels = %w[a e i o u] # vowels = 'aeiou'.split('') # vowels = ["a", "e", "i", "o", "u"]
-  words = string.split
-  new_words = []
+def translate(phrase)
+  # Define vowels to look for
+  vowels = ["a", "e", "i", "o", "u"]
+  pig_words = []
 
-  words.each do |word|
-    new_word =
-      if word.match?(/^.*qu/)
-        first_part = word[/^.*qu/]
-        last_part = word.delete first_part
-        last_part + first_part + "ay"
+  phrase.split.each do |word|
+    # Find the end of the leading "consonants" (with special case for "qu")
+    suffix_start = 0
+    prior_ch = ""
+    word.each_char do |ch|
+      break if vowels.include?(ch) && !(ch == "u" && prior_ch == "q")
+      suffix_start += 1
+      prior_ch = ch
+    end
 
-      else
-        !vowels.include?(word[0])
-        first_part = word[/[^aeiou]*/]
-        last_part = word.delete first_part
-        last_part + first_part + "ay"
-      end
-    new_words.push new_word
+    # Reorder the prefix (possibly empty string) and suffix, and append "ay"
+    prefix = word.slice(0, suffix_start)
+    suffix = word.slice(suffix_start, word.length)
+    pig_words.push("#{suffix}#{prefix}ay")
   end
-  new_words.join " "
+
+  pig_words.join(" ")
 end
+
+# def translate(string)
+#   vowels = %w[a e i o u] # vowels = 'aeiou'.split('') # vowels = ["a", "e", "i", "o", "u"]
+#   words = string.split
+#   new_words = []
+
+#   words.each do |word|
+#     new_word =
+#       if word.match?(/^.*qu/)
+#         first_part = word[/^.*qu/]
+#         last_part = word.delete first_part
+#         last_part + first_part + "ay"
+
+#       else
+#         !vowels.include?(word[0])
+#         first_part = word[/[^aeiou]*/]
+#         last_part = word.delete first_part
+#         last_part + first_part + "ay"
+#       end
+#     new_words.push new_word
+#   end
+#   new_words.join " "
+# end
 
 # Unfinished
 # def translate(sentence)
